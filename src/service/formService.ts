@@ -8,30 +8,29 @@ interface IFormulaire {
   options: string[];
 }
 
-// Interface représentant le document MongoDB pour un formulaire
+
 interface IFormulaireDocument extends Document {
   formulaires: IFormulaire[];
 }
 
-// Interface représentant le modèle MongoDB pour un formulaire
 interface IFormulaireModel extends Model<IFormulaireDocument> {}
 
-// Définition du schéma du modèle
+
 const formulaireSchema = new Schema<IFormulaireDocument, IFormulaireModel>({
   formulaires: [
     {
-      id: Number,
-      type: String,
-      label: String,
-      options: [String],
+      id: { type: Number, required: true },
+      type: { type: String, required: true },
+      label: { type: String, required: true },
+      options: { type: [String], required: true },
     },
   ],
 });
 
-// Définition du modèle basé sur le schéma
+
 const Formulaire = mongoose.model<IFormulaireDocument, IFormulaireModel>('Form', formulaireSchema);
 
-// Classe représentant les fonctionnalités du service FormService
+
 class FormService {
   async saveForm(formDataArray: IFormulaire[]): Promise<void> {
     try {
@@ -46,7 +45,7 @@ class FormService {
     } catch (error) {
       console.error('Erreur lors de la sauvegarde des formulaires', error);
     } finally {
-      mongoose.disconnect(); // Déconnectez-vous de la base de données après avoir terminé
+      mongoose.disconnect();
     }
   }
 
@@ -66,7 +65,7 @@ class FormService {
     } catch (error) {
       console.error('Erreur lors de la récupération des formulaires', error);
     } finally {
-      mongoose.disconnect(); // Déconnectez-vous de la base de données après avoir terminé
+      mongoose.disconnect();
     }
   }
 }
